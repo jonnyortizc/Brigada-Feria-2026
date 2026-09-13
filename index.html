@@ -22,14 +22,20 @@
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 font-sans text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- Encabezado -->
+  <!-- Encabezado / Banner Principal con Logo Permanente -->
   <header class="bg-slate-900/80 backdrop-blur-md text-white p-4 shadow-lg border-b border-slate-700/50 sticky top-0 z-10">
-    <div class="max-w-md mx-auto flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
-        <h1 class="font-bold text-base leading-tight">BRIGADA DE EMERGENCIA - CLINICA DEL PRADO<br><span class="text-xs text-blue-300 font-normal">Seguridad & Emergencias</span></h1>
+    <div class="max-w-md mx-auto flex justify-between items-center gap-3">
+      <div class="flex items-center gap-3">
+        <!-- ============================================================================================== -->
+        <!-- CAMBIAR IMAGEN AQUÍ: Modifica el atributo 'src' de esta etiqueta <img> para cambiar el logo del BANNER -->
+        <!-- ============================================================================================== -->
+        <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-10 h-10 object-contain flex-shrink-0 drop-shadow">
+        
+        <div>
+          <h1 class="font-bold text-sm leading-tight">BRIGADA DE EMERGENCIA<br><span class="text-xs text-blue-300 font-normal">Clínica del Prado</span></h1>
+        </div>
       </div>
-      <span id="badge-step" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-xs px-3.5 py-1.5 rounded-full font-bold shadow-md border border-blue-400/30">1 / 10</span>
+      <span id="badge-step" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-xs px-3 py-1 rounded-full font-bold shadow-md border border-blue-400/30 flex-shrink-0">1 / 10</span>
     </div>
   </header>
 
@@ -39,7 +45,8 @@
     <!-- 1. REGISTRO DEL COLABORADOR -->
     <div id="step-register" class="glass-card rounded-3xl shadow-2xl p-6 fade-in border border-white/20">
       <div class="text-center mb-5">
-        <h2 class="text-2xl font-black text-slate-800 mt-2">Registro de Personal</h2>
+        <h2 class="text-2xl font-black text-slate-800">Registro de Personal</h2>
+        <p class="text-xs text-slate-500 mt-1">Evaluación de Seguridad & Emergencias</p>
       </div>
       
       <form id="form-user" onsubmit="startQuiz(event)" class="space-y-3.5">
@@ -104,12 +111,12 @@
 
       <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-5 shadow-inner">
         <span class="block text-xl font-black text-emerald-800 tracking-tight">Participación Registrada</span>
-        <span class="text-xs font-bold text-emerald-600 mt-1 inline-block">¡Gracias por formar parte de la Feria de la Salud 2026!</span>
+        <span id="score-display" class="text-sm font-extrabold text-teal-700 mt-1 block">Calificación: 0 / 10</span>
       </div>
 
       <div class="space-y-2.5">
         <!-- BOTÓN DESCARGAR CERTIFICADO EN PDF -->
-        <button onclick="downloadPDFCertificate()" class="w-full bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:to-pink-700 active:scale-[0.98] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+        <button onclick="downloadPDFCertificate()" class="w-full bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 hover:from-teal-700 hover:to-green-700 active:scale-[0.98] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v1.5H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zM9 9.5h1v-1H9v1zm5 2h-1.5V7H14c1.1 0 2 .9 2 2v1.5c0 1.1-.9 2-2 2zm0-3.5h-1v2.5h1c.28 0 .5-.22.5-.5V8.5c0-.28-.22-.5-.5-.5zm5 1.5h-1.5v1H19v1.5h-1.5V13H16V7h3v1.5zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/></svg>
           Descargar Certificado PDF
         </button>
@@ -122,64 +129,78 @@
 
   </main>
 
-  <!-- PLANTILLA OCULTA DEL CERTIFICADO PDF (LLAMATIVO Y SIN CALIFICACIÓN) -->
+  <!-- PLANTILLA DEL CERTIFICADO -->
   <div class="hidden">
-    <div id="pdf-certificate-template" class="w-[800px] h-[565px] p-8 bg-slate-900 text-white relative flex flex-col justify-between box-border font-sans overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);">
-      <!-- Decoración de Bordes -->
-      <div class="absolute inset-3 border-2 border-amber-400/40 rounded-2xl pointer-events-none"></div>
-      <div class="absolute inset-4 border border-indigo-500/30 rounded-xl pointer-events-none"></div>
+    <div id="pdf-certificate-template" class="w-[800px] h-[565px] p-8 bg-white text-slate-800 relative flex flex-col justify-between box-border font-sans overflow-hidden border-8 border-cyan-800">
       
-      <!-- Destellos de Fondo -->
-      <div class="absolute -top-20 -left-20 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+      <!-- Fondos Decorativos Institucionales -->
+      <svg class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-15" viewBox="0 0 800 565" fill="none">
+        <path d="M-100,80 C150,180 350,-20 850,120 L850,-50 L-100,-50 Z" fill="#005B94"/>
+        <path d="M-100,520 C200,380 400,560 850,420 L850,600 L-100,600 Z" fill="#00A389"/>
+      </svg>
 
-      <!-- Encabezado del Certificado -->
-      <div class="flex justify-between items-center z-10 border-b border-slate-700/60 pb-4">
-        <div>
-          <h1 class="text-xl font-black text-amber-400 tracking-wider">CLÍNICA DEL PRADO</h1>
-          <p class="text-xs text-slate-300 font-medium tracking-wide">BRIGADA DE EMERGENCIA & SG-SST</p>
+      <!-- Encabezado Institucional -->
+      <div class="flex justify-between items-center z-10 border-b-2 border-cyan-800/20 pb-3">
+        <div class="flex items-center gap-4">
+          
+          <!-- ============================================================================================== -->
+          <!-- CAMBIAR IMAGEN AQUÍ: Reemplaza el src de esta imagen para actualizar el logo del CERTIFICADO   -->
+          <!-- Nota: Si prefieres mostrar un círculo con texto mientras consigues el archivo final, puedes   -->
+          <!-- descomentar el bloque comentado abajo y quitar la etiqueta <img>.                           -->
+          <!-- ============================================================================================== -->
+          <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-16 h-16 object-contain flex-shrink-0">
+          
+          <!-- OPCIONAL (CÍRCULO DE REEMPLAZO SI NO TIENES LA IMAGEN):
+          <div class="w-16 h-16 rounded-full border-2 border-dashed border-cyan-800 flex flex-col items-center justify-center text-[8px] font-bold text-cyan-800 text-center p-1 bg-cyan-50/50 flex-shrink-0">
+            <span>LOGO</span>
+            <span>BRIGADA</span>
+          </div> 
+          -->
+
+          <div>
+            <h1 class="text-2xl font-black text-cyan-950 tracking-tight">BRIGADA DE EMERGENCIAS</h1>
+            <p class="text-xs font-bold text-cyan-700 uppercase tracking-wider">CLÍNICA DEL PRADO</p>
+          </div>
         </div>
         <div class="text-right">
-          <span class="inline-block bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md">Feria de la Salud 2026</span>
+          <span class="inline-block bg-cyan-900 text-white text-[10px] font-black uppercase px-3.5 py-1.5 rounded-full shadow-sm">Feria de la Salud 2026</span>
+          <p class="text-[9px] text-cyan-800 font-semibold mt-1">Gestión del Riesgo Institucional</p>
         </div>
       </div>
 
-      <!-- Cuerpo Principal -->
-      <div class="text-center my-auto z-10 py-2">
-        <p class="text-xs uppercase tracking-widest text-indigo-300 font-bold mb-1">Otorgado a:</p>
-        <h2 id="cert-user-name" class="text-3xl font-black text-white tracking-tight mb-2 uppercase drop-shadow-md">Nombre del Colaborador</h2>
+      <!-- Texto Central Unificado sin Contenedores -->
+      <div class="text-center z-10 my-auto py-4 px-6 flex flex-col justify-center items-center">
+        <p class="text-xs font-black text-cyan-700 uppercase tracking-widest mb-1">Certificado de Capacitación y Evaluación</p>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight mb-2">CONSTANCIA DE PARTICIPACIÓN</h2>
+        <p class="text-xs text-slate-600 mb-6 max-w-lg">Se hace constar que el siguiente colaborador ha completado satisfactoriamente la evaluación teórica e interactiva de la Brigada de Emergencia:</p>
         
-        <div class="flex justify-center items-center gap-4 text-xs text-slate-300 mb-4 font-medium">
-          <p>C.C: <span id="cert-user-doc" class="text-white font-bold">1020304050</span></p>
-          <span class="text-amber-400">•</span>
-          <p>Cargo: <span id="cert-user-role" class="text-white font-bold">Cargo</span></p>
-          <span class="text-amber-400">•</span>
-          <p>Área: <span id="cert-user-service" class="text-white font-bold">Servicio</span></p>
-        </div>
-
-        <p class="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed">
-          Por su valiosa <strong class="text-amber-300 font-extrabold">PARTICIPACIÓN</strong> activa en la jornada de capacitación y evaluación práctica de la <strong class="text-white">Brigada de Emergencia</strong>, demostrando su compromiso con la prevención y la cultura de seguridad.
+        <!-- Datos del Colaborador -->
+        <h3 id="cert-user-name" class="text-3xl font-black text-cyan-950 uppercase tracking-wide mb-2">Nombre del Colaborador</h3>
+        <p class="text-sm text-slate-800 font-semibold">
+          C.C. <strong id="cert-user-doc" class="text-cyan-900">1020304050</strong> &nbsp;•&nbsp; 
+          Cargo: <strong id="cert-user-role" class="text-cyan-900">Cargo</strong> &nbsp;•&nbsp; 
+          Área/Servicio: <strong id="cert-user-service" class="text-cyan-900">Servicio</strong>
+        </p>
+        <p class="text-xs text-teal-700 font-bold mt-4 uppercase tracking-wider">
+          Módulos Evaluados: Extintores & Rutas de Evacuación
         </p>
       </div>
 
-      <!-- Pie de Página / Firmas -->
-      <div class="z-10 pt-4 border-t border-slate-700/60 flex justify-between items-end">
+      <!-- Pie de Página -->
+      <div class="z-10 pt-3 border-t border-slate-200 flex justify-between items-end">
         <div class="text-left">
-          <p id="cert-date" class="text-[10px] text-slate-400">Fecha de emisión: Octubre 2026</p>
-          <p class="text-[9px] text-slate-500">Medellín, Colombia</p>
+          <p id="cert-date" class="text-[10px] text-slate-600 font-semibold">Fecha de emisión: Octubre 2026</p>
+          <p class="text-[9px] text-slate-400">Medellín, Colombia • Clínica del Prado</p>
         </div>
         
-        <div class="flex gap-8 text-center">
-          <div class="w-32 border-t border-slate-500 pt-1">
-            <p class="text-[10px] font-bold text-slate-200">Comité SG-SST</p>
-            <p class="text-[8px] text-slate-400">Clínica del Prado</p>
-          </div>
-          <div class="w-32 border-t border-slate-500 pt-1">
-            <p class="text-[10px] font-bold text-amber-400">Brigada de Emergencia</p>
-            <p class="text-[8px] text-slate-400">Coordinación General</p>
+        <div class="text-center">
+          <div class="w-40 border-t border-slate-400 pt-1">
+            <p class="text-[10px] font-bold text-cyan-800">Brigada de Emergencia</p>
+            <p class="text-[8px] text-slate-500">Coordinación General</p>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -206,9 +227,9 @@
       { id: "P15", category: "Manejo de Extintores", question: "¿Qué normas técnicas de la NFPA y NTC regulan la selección y distribución de extintores?", options: ["NFPA 10 y Norma Técnica Colombiana NTC 2885.", "NFPA 70 y NTC 1500.", "NFPA 101 y NTC 45001.", "ISO 9001 y NTC 5555."], correct: 0, explanation: "P15: Regulados bajo la NFPA 10 y la Norma Técnica Colombiana NTC 2885." },
       { id: "P16", category: "Rutas de Evacuación", question: "¿Cómo se define legalmente una ruta de evacuación y qué norma exige su implementación?", options: ["Recorrido continuo desde el puesto de trabajo a lugar seguro exterior. Obligatorio por Decreto 1072 de 2015.", "Camino opcional sugerido por la brigada mediante circulares internas.", "Cualquier pasillo interior que conduzca a un baño de la clínica.", "El mapa general de distribución de oficinas de la empresa."], correct: 0, explanation: "P16: Recorrido continuo exterior seguro exigido por el Decreto 1072/2015 (Art. 2.2.4.6.25 numeral 8)." },
       { id: "P17", category: "Rutas de Evacuación", question: "¿Cuál es el alcance de la cobertura legal del plan de evacuación?", options: ["Cubre obligatoriamente a todos los turnos, trabajadores, contratistas, subcontratistas, proveedores y visitantes.", "Aplica únicamente para el personal de planta en jornada diurna.", "Solo abarca a los miembros capacitados de la brigada de emergencias.", "Solo protege a los pacientes hospitalizados en cama."], correct: 0, explanation: "P17: Cubre la totalidad de centros y turnos de trabajo, incluyendo a visitantes y contratistas." },
-      { id: "P18", category: "Rutas de Evacuación", question: "¿Con qué frecuencia mínima exige la norma colombiana realizar simulacros de evacuación?", options: ["Como mínimo una (1) vez al año con la participación de todos los trabajadores.", "Cada tres meses de forma obligatoria.", "Una vez cada dos años según la ARL.", "Únicamente cuando la Secretaría de Salud lo requiera."], correct: 0, explanation: "P18: Mínimo 1 vez al año conforme al Decreto 1072 de 2015 (Art. 2.2.4.6.25 numeral 10)." },
+      { id: "P18", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿con qué frecuencia mínima exige la norma colombiana realizar simulacros de evacuación?", options: ["Como mínimo una (1) vez al año con la participación de todos los trabajadores.", "Cada tres meses de forma obligatoria.", "Una vez cada dos años según la ARL.", "Únicamente cuando la Secretaría de Salud lo requiera."], correct: 0, explanation: "P18: Mínimo 1 vez al año conforme al Decreto 1072 de 2015 (Art. 2.2.4.6.25 numeral 10)." },
       { id: "P19", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿qué elementos de circulación NO deben considerarse jamás como salidas de emergencia?", options: ["Escaleras de madera, escaleras de caracol, ascensores y escaleras de mano.", "Pasillos principales con piso antideslizante.", "Puertas con barra antipánico.", "Rampas exteriores de concreto."], correct: 0, explanation: "P19: Prohibidas como salidas de emergencia: escaleras de madera, caracol, ascensores y de mano." },
-      { id: "P20", category: "Rutas de Evacuación", question: "¿Cuáles son los requisitos físicos de la Res. 2400/1979 para las salidas de emergencia?", options: ["Mínimo 2 salidas amplias por piso, protegidas, libres de obstáculos, iluminadas y puertas abriendo hacia el exterior.", "Una sola salida central provista de cerradura electromagnética.", "Salidas de emergencia de tamaño estándar con apertura hacia adentro.", "Ventanales amoblados que conecten al patio interno."], correct: 0, explanation: "P20: Mínimo 2 salidas por piso, independientes, iluminadas, despejadas y con apertura en sentido de salida." },
+      { id: "P20", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿cuáles son los requisitos físicos para las salidas de emergencia?", options: ["Mínimo 2 salidas amplias por piso, protegidas, libres de obstáculos, iluminadas y puertas abriendo hacia el exterior.", "Una sola salida central provista de cerradura electromagnética.", "Salidas de emergencia de tamaño estándar con apertura hacia adentro.", "Ventanales amoblados que conecten al patio interno."], correct: 0, explanation: "P20: Mínimo 2 salidas por piso, independientes, iluminadas, despejadas y con apertura en sentido de salida." },
       { id: "P21", category: "Rutas de Evacuación", question: "¿Cuál es la diferencia técnica entre Ruta de Evacuación, Salida de Emergencia y Punto de Encuentro?", options: ["Ruta: recorrido interior; Salida: punto estructural exterior; Punto de Encuentro: zona segura exterior para conteo.", "Son tres términos idénticos para denominar la puerta principal.", "Ruta: patio; Salida: pasillo; Punto de Encuentro: recepción.", "Ruta: ascensor; Salida: escaleras; Punto de Encuentro: oficina de SST."], correct: 0, explanation: "P21: La Ruta es el trayecto; la Salida es el límite estructural; el Punto de Encuentro es la zona exterior para conteo." },
       { id: "P22", category: "Rutas de Evacuación", question: "¿Cuáles son las cuatro fases del proceso de evacuación y qué conforma el tiempo de reacción?", options: ["1) Detección, 2) Alarma, 3) Preparación, 4) Salida. Las 3 primeras constituyen el tiempo de reacción.", "1) Fuego, 2) Gritos, 3) Corrida, 4) Rescate.", "1) Conteo, 2) Llamada, 3) Espera, 4) Salida.", "1) Alerta, 2) Reacción, 3) Extinción, 4) Evaluación."], correct: 0, explanation: "P22: Fases: Detección, Alarma, Preparación y Salida. El tiempo de reacción comprende las tres primeras." },
       { id: "P23", category: "Rutas de Evacuación", question: "¿En qué consiste el 'Código de Pitos' utilizado para señales de emergencia auditivas?", options: ["1 pitazo: Alerta; 2 pitazos: Emergencia confirmada (prepararse); 3 pitazos: Evacuación inmediata.", "1 pitazo: Evacuar; 2 pitazos: Silencio; 3 pitazos: Regresar.", "1 pitazo: Incendio; 2 pitazos: Terremoto; 3 pitazos: Fuga de gas.", "Es una señal aleatoria según el criterio del brigadista."], correct: 0, explanation: "P23: 1 pitazo = Alerta de brigadista; 2 pitazos = Confirmación/Preparación; 3 pitazos = Evacuación inmediata." },
@@ -225,7 +246,6 @@
     let activeQuestions = [];
     let currentQuestionIndex = 0;
     let score = 0;
-    let userAnswers = [];
     let selectedOption = null;
 
     let scene, camera, renderer, cube;
@@ -240,7 +260,7 @@
       renderer.setSize(56, 56);
       container.appendChild(renderer.domElement);
       const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-      const material = new THREE.MeshPhongMaterial({ color: 0x4f46e5, emissive: 0x1e1b4b, specular: 0xffffff, shininess: 100, transparent: true, opacity: 0.9 });
+      const material = new THREE.MeshPhongMaterial({ color: 0x005b94, emissive: 0x002d4a, specular: 0xffffff, shininess: 100, transparent: true, opacity: 0.9 });
       cube = new THREE.Mesh(geometry, material);
       scene.add(cube);
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
@@ -270,7 +290,6 @@
     }
 
     function generateRandomExam() {
-      // Selecciona 10 preguntas totalmente aleatorias del banco general y las mezcla en orden aleatorio
       return shuffleArray(rawQuestionBank).slice(0, 10);
     }
 
@@ -280,6 +299,7 @@
       currentUser.document = document.getElementById('user-document').value.trim();
       currentUser.role = document.getElementById('user-role').value.trim();
       currentUser.service = document.getElementById('user-service').value.trim();
+      score = 0;
 
       activeQuestions = generateRandomExam();
       document.getElementById('step-register').classList.add('hidden');
@@ -305,7 +325,6 @@
 
       document.getElementById('feedback-box').classList.add('hidden');
 
-      // Mezclar las opciones aleatoriamente manteniendo la referencia de la respuesta correcta
       const optionsWithStatus = q.options.map((opt, idx) => ({
         text: opt,
         isCorrect: idx === q.correct
@@ -319,25 +338,17 @@
         btn.type = 'button';
         btn.className = `w-full text-left p-3.5 rounded-2xl border border-slate-200/80 bg-white/80 text-xs font-semibold text-slate-700 hover:border-indigo-400 hover:bg-indigo-50/50 active:scale-[0.98] transition-all flex items-start gap-3 shadow-sm`;
         btn.innerHTML = `<span class="bg-slate-100 text-indigo-700 rounded-lg w-6 h-6 flex items-center justify-center text-[11px] font-black flex-shrink-0 mt-0.5 shadow-inner">${String.fromCharCode(65 + index)}</span><span class="leading-snug">${optObj.text}</span>`;
-        btn.onclick = () => selectOption(index, optObj.isCorrect, shuffledOptions, btn);
+        btn.onclick = () => selectOption(index, optObj.isCorrect, shuffledOptions);
         optionsContainer.appendChild(btn);
       });
     }
 
-    function selectOption(selectedIndex, isCorrect, shuffledOptions, btnElement) {
+    function selectOption(selectedIndex, isCorrect, shuffledOptions) {
       if (selectedOption !== null) return;
       selectedOption = selectedIndex;
       const q = activeQuestions[currentQuestionIndex];
 
       if (isCorrect) score++;
-
-      userAnswers.push({
-        id: q.id,
-        bloque: q.category,
-        pregunta: q.question,
-        respuestaSeleccionada: shuffledOptions[selectedIndex].text,
-        correcta: isCorrect ? "Sí" : "No"
-      });
 
       const buttons = document.getElementById('options-container').children;
       Array.from(buttons).forEach((b, idx) => {
@@ -374,10 +385,10 @@
       document.getElementById('step-results').classList.remove('hidden');
 
       document.getElementById('user-summary').innerText = `${currentUser.name} | C.C. ${currentUser.document} | ${currentUser.role} (${currentUser.service})`;
+      document.getElementById('score-display').innerText = `Calificación obtenida: ${score} / 10`;
     }
 
     function downloadPDFCertificate() {
-      // Actualizar datos de la plantilla PDF
       document.getElementById('cert-user-name').innerText = currentUser.name;
       document.getElementById('cert-user-doc').innerText = currentUser.document;
       document.getElementById('cert-user-role').innerText = currentUser.role;
@@ -390,7 +401,7 @@
       
       const opt = {
         margin:       0,
-        filename:     `Certificado_Participacion_${currentUser.document}.pdf`,
+        filename:     `Certificado_Brigada_${currentUser.document}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'px', format: [800, 565], orientation: 'landscape' }
