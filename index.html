@@ -26,9 +26,6 @@
   <header class="bg-slate-900/80 backdrop-blur-md text-white p-4 shadow-lg border-b border-slate-700/50 sticky top-0 z-10">
     <div class="max-w-md mx-auto flex justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <!-- ============================================================================================== -->
-        <!-- CAMBIAR IMAGEN AQUÍ: Modifica el atributo 'src' de esta etiqueta <img> para cambiar el logo del BANNER -->
-        <!-- ============================================================================================== -->
         <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-20 h-20 object-contain flex-shrink-0 drop-shadow">
         
         <div>
@@ -109,9 +106,14 @@
       <h2 class="text-2xl font-black text-slate-800 mb-0.5">Evaluación Completada</h2>
       <p id="user-summary" class="text-xs text-slate-500 mb-4">Detalles del colaborador</p>
 
-      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-5 shadow-inner">
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-3 shadow-inner">
         <span class="block text-xl font-black text-emerald-800 tracking-tight">Participación Registrada</span>
         <span id="score-display" class="text-sm font-extrabold text-teal-700 mt-1 block">Calificación: 0 / 10</span>
+      </div>
+
+      <!-- Estado de Envío de Datos -->
+      <div id="sync-status" class="mb-4 text-xs font-semibold text-slate-500 flex items-center justify-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Guardando datos en Google Sheets...
       </div>
 
       <div class="space-y-2.5">
@@ -142,20 +144,7 @@
       <!-- Encabezado Institucional -->
       <div class="flex justify-between items-center z-10 border-b-2 border-cyan-800/20 pb-3">
         <div class="flex items-center gap-4">
-          
-          <!-- ============================================================================================== -->
-          <!-- CAMBIAR IMAGEN AQUÍ: Reemplaza el src de esta imagen para actualizar el logo del CERTIFICADO   -->
-          <!-- Nota: Si prefieres mostrar un círculo con texto mientras consigues el archivo final, puedes   -->
-          <!-- descomentar el bloque comentado abajo y quitar la etiqueta <img>.                           -->
-          <!-- ============================================================================================== -->
           <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-16 h-16 object-contain flex-shrink-0">
-          
-          <!-- OPCIONAL (CÍRCULO DE REEMPLAZO SI NO TIENES LA IMAGEN):
-          <div class="w-16 h-16 rounded-full border-2 border-dashed border-cyan-800 flex flex-col items-center justify-center text-[8px] font-bold text-cyan-800 text-center p-1 bg-cyan-50/50 flex-shrink-0">
-            <span>LOGO</span>
-            <span>BRIGADA</span>
-          </div> 
-          -->
 
           <div>
             <h1 class="text-2xl font-black text-cyan-950 tracking-tight">BRIGADA DE EMERGENCIAS</h1>
@@ -209,6 +198,13 @@
   </footer>
 
   <script>
+    // ==============================================================================================
+    // CONFIGURACIÓN DE CONEXIÓN CON GOOGLE SHEETS
+    // REEMPLAZA LA SIGUIENTE URL CON LA QUE TE ENTREGA GOOGLE APPS SCRIPT AL DESPLEGAR COMO WEB APP
+    // ==============================================================================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkAWgzpNefvWc8yAAzJYBQjdhpiKxOMizyUzWJouUUdLh7nfwHeH6GUvdfLiK0AokEqw/exec";
+    
+
     const rawQuestionBank = [
       { id: "P1", category: "Manejo de Extintores", question: "¿Qué evaluación previa debe realizarse antes de decidir combatir un fuego con un extintor?", options: ["Verificar que el fuego sea pequeño (conato), tener ruta de salida despejada a la espalda y conocer el tipo de fuego.", "Verificar si hay personal capacitado presente y buscar EPP completo.", "Descargar el extintor de inmediato sin evaluar el entorno.", "Llamar a la gerencia antes de accionar la palanca."], correct: 0, explanation: "P1: Debe confirmarse que sea un fuego pequeño (conato), contar con ruta de escape libre a la espalda y conocer el agente a usar." },
       { id: "P2", category: "Manejo de Extintores", question: "¿En qué consisten los 4 pasos de la técnica P.A.S.S. para el uso seguro de un extintor?", options: ["Presionar, Apuntar, Salir, Secar.", "P (Pull): Tira del seguro; A (Aim): Apunta a la base; S (Squeeze): Aprieta palanca; S (Sweep): Barre a los lados.", "Parar, Apagar, Soplar, Sacudir.", "Proteger, Avisar, Socorrer, Salvar."], correct: 1, explanation: "P2: P.A.S.S. representa Pull (desbloquear), Aim (apuntar a la base), Squeeze (apretar) y Sweep (barrer la base)." },
@@ -386,7 +382,81 @@
 
       document.getElementById('user-summary').innerText = `${currentUser.name} | C.C. ${currentUser.document} | ${currentUser.role} (${currentUser.service})`;
       document.getElementById('score-display').innerText = `Calificación obtenida: ${score} / 10`;
+
+      // Envío automático de los datos a Google Sheets
+      const payload = {
+        nombre: currentUser.name,
+        documento: currentUser.document,
+        cargo: currentUser.role,
+        servicio: currentUser.service,
+        calificacion: score
+      };
+
+      sendDataToGoogleSheets(payload);
     }
+
+    // ==============================================================================================
+    // FUNCIONALIDADES ASÍNCRONAS PARA ENVÍO Y MANEJO OFFLINE
+    // ==============================================================================================
+    async function sendDataToGoogleSheets(payload) {
+      const syncStatusEl = document.getElementById('sync-status');
+      
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (syncStatusEl) {
+          syncStatusEl.className = "mb-4 text-xs font-bold text-emerald-600 flex items-center justify-center gap-1";
+          syncStatusEl.innerHTML = `✓ Datos guardados exitosamente en Google Sheets`;
+        }
+      } catch (error) {
+        console.warn("Error de red, guardando respaldo local:", error);
+        saveOfflineBackup(payload);
+
+        if (syncStatusEl) {
+          syncStatusEl.className = "mb-4 text-xs font-semibold text-amber-600 flex items-center justify-center gap-1";
+          syncStatusEl.innerHTML = `⚠️ Guardado localmente (se sincronizará al recuperar red)`;
+        }
+      }
+    }
+
+    function saveOfflineBackup(payload) {
+      try {
+        const pending = JSON.parse(localStorage.getItem("brigada_pending_sync") || "[]");
+        pending.push(payload);
+        localStorage.setItem("brigada_pending_sync", JSON.stringify(pending));
+      } catch (e) {
+        console.error("No se pudo guardar en almacenamiento local:", e);
+      }
+    }
+
+    async function syncOfflineData() {
+      const pending = JSON.parse(localStorage.getItem("brigada_pending_sync") || "[]");
+      if (pending.length === 0) return;
+
+      const remaining = [];
+      for (const item of pending) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(item)
+          });
+        } catch (e) {
+          remaining.push(item);
+        }
+      }
+      localStorage.setItem("brigada_pending_sync", JSON.stringify(remaining));
+    }
+
+    // Escucha de reconexión
+    window.addEventListener("online", syncOfflineData);
+    document.addEventListener("DOMContentLoaded", syncOfflineData);
 
     function downloadPDFCertificate() {
       document.getElementById('cert-user-name').innerText = currentUser.name;
