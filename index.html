@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BRIGADA DE EMERGENCIA - CLINICA DEL PRADO</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js para Renderizado e Ícono 3D Animado -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- html2pdf.js para Generación del Certificado PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body { -webkit-tap-highlight-color: transparent; }
+    .fade-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 font-sans text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Encabezado -->
+  <header class="bg-slate-900/80 backdrop-blur-md text-white p-4 shadow-lg border-b border-slate-700/50 sticky top-0 z-10">
+    <div class="max-w-md mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+        <h1 class="font-bold text-base leading-tight">BRIGADA DE EMERGENCIA - CLINICA DEL PRADO<br><span class="text-xs text-blue-300 font-normal">Seguridad & Emergencias</span></h1>
+      </div>
+      <span id="badge-step" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-xs px-3.5 py-1.5 rounded-full font-bold shadow-md border border-blue-400/30">1 / 10</span>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="max-w-md w-full mx-auto p-4 flex-grow flex flex-col justify-center">
+
+    <!-- 1. REGISTRO DEL COLABORADOR -->
+    <div id="step-register" class="glass-card rounded-3xl shadow-2xl p-6 fade-in border border-white/20">
+      <div class="text-center mb-5">
+        <h2 class="text-2xl font-black text-slate-800 mt-2">Registro de Personal</h2>
+      </div>
+      
+      <form id="form-user" onsubmit="startQuiz(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo</label>
+          <input type="text" id="user-name" required placeholder="Ej. Ana María Torres" class="w-full px-3.5 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none border-slate-300 bg-slate-50">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Cédula</label>
+          <input type="text" id="user-document" required placeholder="Ej. 1020304050" class="w-full px-3.5 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none border-slate-300 bg-slate-50">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Cargo</label>
+            <input type="text" id="user-role" required placeholder="Ej. Enfermera" class="w-full px-3.5 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none border-slate-300 bg-slate-50">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Servicio / Área</label>
+            <input type="text" id="user-service" required placeholder="Ej. Urgencias" class="w-full px-3.5 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none border-slate-300 bg-slate-50">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 active:scale-[0.98] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-sm mt-4 tracking-wide">
+          Iniciar
+        </button>
+      </form>
+    </div>
+
+    <!-- 2. TARJETA INTERACTIVA DE PREGUNTA CON ÍCONO 3D ANIMADO -->
+    <div id="step-quiz" class="hidden glass-card rounded-3xl shadow-2xl p-6 fade-in border border-white/20 relative">
+      <div class="w-full bg-slate-200 rounded-full h-2 mb-4 overflow-hidden">
+        <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+      </div>
+
+      <div class="flex items-center justify-between mb-3 bg-slate-900/5 p-2 rounded-2xl border border-slate-200/50">
+        <div id="canvas-container-3d" class="w-14 h-14 flex-shrink-0"></div>
+        <div class="text-right">
+          <span id="q-category" class="inline-block bg-indigo-600 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Categoría</span>
+        </div>
+      </div>
+
+      <h3 id="q-text" class="text-sm font-bold text-slate-800 mb-4 leading-relaxed min-h-[48px]">Cargando pregunta...</h3>
+
+      <div id="options-container" class="space-y-2.5 mb-4"></div>
+
+      <div id="feedback-box" class="hidden p-3.5 rounded-2xl mb-4 text-xs font-medium leading-relaxed shadow-inner"></div>
+
+      <button id="btn-next" onclick="nextQuestion()" disabled class="w-full bg-slate-300 text-slate-500 font-bold py-3.5 rounded-xl transition-all text-sm shadow-md">
+        Siguiente Pregunta
+      </button>
+    </div>
+
+    <!-- 3. PANTALLA DE RESULTADOS -->
+    <div id="step-results" class="hidden glass-card rounded-3xl shadow-2xl p-6 fade-in border border-white/20 text-center">
+      <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-extrabold shadow-inner border-4 border-emerald-200">
+        ✓
+      </div>
+      <h2 class="text-2xl font-black text-slate-800 mb-0.5">Evaluación Completada</h2>
+      <p id="user-summary" class="text-xs text-slate-500 mb-4">Detalles del colaborador</p>
+
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-5 shadow-inner">
+        <span class="block text-xl font-black text-emerald-800 tracking-tight">Participación Registrada</span>
+        <span class="text-xs font-bold text-emerald-600 mt-1 inline-block">¡Gracias por formar parte de la Feria de la Salud 2026!</span>
+      </div>
+
+      <div class="space-y-2.5">
+        <!-- BOTÓN DESCARGAR CERTIFICADO EN PDF -->
+        <button onclick="downloadPDFCertificate()" class="w-full bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:to-pink-700 active:scale-[0.98] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v1.5H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zM9 9.5h1v-1H9v1zm5 2h-1.5V7H14c1.1 0 2 .9 2 2v1.5c0 1.1-.9 2-2 2zm0-3.5h-1v2.5h1c.28 0 .5-.22.5-.5V8.5c0-.28-.22-.5-.5-.5zm5 1.5h-1.5v1H19v1.5h-1.5V13H16V7h3v1.5zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/></svg>
+          Descargar Certificado PDF
+        </button>
+
+        <button onclick="location.reload()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl border border-slate-300 transition-all text-xs">
+          Evaluar a otro colaborador
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PLANTILLA OCULTA DEL CERTIFICADO PDF (LLAMATIVO Y SIN CALIFICACIÓN) -->
+  <div class="hidden">
+    <div id="pdf-certificate-template" class="w-[800px] h-[565px] p-8 bg-slate-900 text-white relative flex flex-col justify-between box-border font-sans overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);">
+      <!-- Decoración de Bordes -->
+      <div class="absolute inset-3 border-2 border-amber-400/40 rounded-2xl pointer-events-none"></div>
+      <div class="absolute inset-4 border border-indigo-500/30 rounded-xl pointer-events-none"></div>
+      
+      <!-- Destellos de Fondo -->
+      <div class="absolute -top-20 -left-20 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Encabezado del Certificado -->
+      <div class="flex justify-between items-center z-10 border-b border-slate-700/60 pb-4">
+        <div>
+          <h1 class="text-xl font-black text-amber-400 tracking-wider">CLÍNICA DEL PRADO</h1>
+          <p class="text-xs text-slate-300 font-medium tracking-wide">BRIGADA DE EMERGENCIA & SG-SST</p>
+        </div>
+        <div class="text-right">
+          <span class="inline-block bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md">Feria de la Salud 2026</span>
+        </div>
+      </div>
+
+      <!-- Cuerpo Principal -->
+      <div class="text-center my-auto z-10 py-2">
+        <p class="text-xs uppercase tracking-widest text-indigo-300 font-bold mb-1">Otorgado a:</p>
+        <h2 id="cert-user-name" class="text-3xl font-black text-white tracking-tight mb-2 uppercase drop-shadow-md">Nombre del Colaborador</h2>
+        
+        <div class="flex justify-center items-center gap-4 text-xs text-slate-300 mb-4 font-medium">
+          <p>C.C: <span id="cert-user-doc" class="text-white font-bold">1020304050</span></p>
+          <span class="text-amber-400">•</span>
+          <p>Cargo: <span id="cert-user-role" class="text-white font-bold">Cargo</span></p>
+          <span class="text-amber-400">•</span>
+          <p>Área: <span id="cert-user-service" class="text-white font-bold">Servicio</span></p>
+        </div>
+
+        <p class="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed">
+          Por su valiosa <strong class="text-amber-300 font-extrabold">PARTICIPACIÓN</strong> activa en la jornada de capacitación y evaluación práctica de la <strong class="text-white">Brigada de Emergencia</strong>, demostrando su compromiso con la prevención y la cultura de seguridad.
+        </p>
+      </div>
+
+      <!-- Pie de Página / Firmas -->
+      <div class="z-10 pt-4 border-t border-slate-700/60 flex justify-between items-end">
+        <div class="text-left">
+          <p id="cert-date" class="text-[10px] text-slate-400">Fecha de emisión: Octubre 2026</p>
+          <p class="text-[9px] text-slate-500">Medellín, Colombia</p>
+        </div>
+        
+        <div class="flex gap-8 text-center">
+          <div class="w-32 border-t border-slate-500 pt-1">
+            <p class="text-[10px] font-bold text-slate-200">Comité SG-SST</p>
+            <p class="text-[8px] text-slate-400">Clínica del Prado</p>
+          </div>
+          <div class="w-32 border-t border-slate-500 pt-1">
+            <p class="text-[10px] font-bold text-amber-400">Brigada de Emergencia</p>
+            <p class="text-[8px] text-slate-400">Coordinación General</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="p-3 text-center text-[10px] text-slate-400 font-medium">
+    Feria de la Salud - Octubre 2026
+  </footer>
+
+  <script>
+    const rawQuestionBank = [
+      { id: "P1", category: "Manejo de Extintores", question: "¿Qué evaluación previa debe realizarse antes de decidir combatir un fuego con un extintor?", options: ["Verificar que el fuego sea pequeño (conato), tener ruta de salida despejada a la espalda y conocer el tipo de fuego.", "Verificar si hay personal capacitado presente y buscar EPP completo.", "Descargar el extintor de inmediato sin evaluar el entorno.", "Llamar a la gerencia antes de accionar la palanca."], correct: 0, explanation: "P1: Debe confirmarse que sea un fuego pequeño (conato), contar con ruta de escape libre a la espalda y conocer el agente a usar." },
+      { id: "P2", category: "Manejo de Extintores", question: "¿En qué consisten los 4 pasos de la técnica P.A.S.S. para el uso seguro de un extintor?", options: ["Presionar, Apuntar, Salir, Secar.", "P (Pull): Tira del seguro; A (Aim): Apunta a la base; S (Squeeze): Aprieta palanca; S (Sweep): Barre a los lados.", "Parar, Apagar, Soplar, Sacudir.", "Proteger, Avisar, Socorrer, Salvar."], correct: 1, explanation: "P2: P.A.S.S. representa Pull (desbloquear), Aim (apuntar a la base), Squeeze (apretar) y Sweep (barrer la base)." },
+      { id: "P3", category: "Manejo de Extintores", question: "¿Cuáles son los errores más comunes al intentar operar un extintor?", options: ["Apuntar a las llamas, acercarse demasiado, dar ráfagas cortas y no recargarlo tras su uso.", "Usar guantes de protección e inspeccionar la manguera.", "Retirarse con la mirada puesta en el fuego.", "Mantener el viento a la espalda durante la aplicación."], correct: 0, explanation: "P3: Los errores principales son apuntar a las llamas (en lugar de la base), pararse muy cerca, descargas sin control y no recargarlo." },
+      { id: "P4", category: "Manejo de Extintores", question: "¿Cuáles son las características y limitaciones del extintor de Polvo Químico Seco (ABC)?", options: ["Es solo para líquidos inflamables y no deja ningún residuo.", "Apto para Clase A, B y C; pero su residuo de fosfato monoamónico es corrosivo para electrónica y difícil de limpiar.", "Apaga fuegos por enfriamiento con agua a alta presión.", "Es un gas inerte recomendado para quirófanos y data centers."], correct: 1, explanation: "P4: Es multipropósito (ABC), pero su polvo daña componentes electrónicos delicados por su carácter corrosivo." },
+      { id: "P5", category: "Manejo de Extintores", question: "¿Por qué el extintor de CO2 es la opción recomendada para centros de cómputo y tableros eléctricos?", options: ["Porque congela las surfaces metálicas impidiendo la combustión.", "Porque utiliza un gas limpio que apaga por sofocación sin dejar residuos que dañen equipos delicados.", "Porque es más económico que el Polvo Químico Seco.", "Porque su alcance supera los 15 metros de distancia."], correct: 1, explanation: "P5: El CO2 es un gas limpio que se evapora sin dejar residuos físicos que dañen los circuitos." },
+      { id: "P6", category: "Manejo de Extintores", question: "¿Por qué la boquilla o 'corneta' del extintor de CO2 tiene un tamaño significativamente grande?", options: ["Para concentrar la presión de salida hacia el techo.", "Para permitir la rápida expansión del gas y proteger al usuario de quemaduras por frío extremo.", "Para almacenar repuestos del precinto de seguridad.", "Por mera estética de fabricación industrial."], correct: 1, explanation: "P6: Permite la rápida expansión del CO2 descargado a temperaturas congelantes y previene quemaduras en las manos." },
+      { id: "P7", category: "Manejo de Extintores", question: "¿Cuáles son las alturas reglamentarias de instalación para extintores portátiles en Colombia?", options: ["Mayor a 40 lbs: máx 1.53 m; Menor a 40 lbs: máx 1.07 m. Separación del piso no menor a 10.2 cm.", "Todos los extintores deben instalarse a 2.0 metros de altura sobre el piso.", "Cualquier altura mientras esté colgado de la pared.", "Deben ubicarse directamente sobre el piso sin soporte."], correct: 0, explanation: "P7: Máximo 1.53 m si pesa más de 40 lbs; máx 1.07 m si pesa menos. La base debe estar a mínimo 10.2 cm del piso." },
+      { id: "P8", category: "Manejo de Extintores", question: "Según la Res. 2400/1979, ¿cuál es la cantidad mínima de extintores por área de trabajo?", options: ["Un extintor por cada 500 metros cuadrados.", "Un extintor por cada 200 metros cuadrados de local o fracción.", "Dos extintores por cada habitación sin importar el área.", "Un extintor único por piso del establecimiento."], correct: 1, explanation: "P8: Art. 221 establece no menos de un extintor por cada 200 metros cuadrados de local o fracción." },
+      { id: "P9", category: "Manejo de Extintores", question: "¿Por qué está expresamente prohibido usar extintores de agua o espuma en fuegos de Clase C?", options: ["Porque el agua intensifica las llamas del papel.", "Porque son conductores de electricidad y generan un riesgo grave de electrocución.", "Porque evaporan el oxígeno del ambiente.", "Porque congelan los cables eléctricos al contacto."], correct: 1, explanation: "P9: Art. 226 Res. 2400. El agua y la espuma conducen corriente eléctrica en equipos energizados." },
+      { id: "P10", category: "Manejo de Extintores", question: "¿Qué agente o procedimiento debe emplearse para combatir fuegos de Clase D (metales combustibles)?", options: ["Agua a presión continua.", "Extintor de CO2 de gran capacidad.", "Arena fina seca, polvo de piedra u otro material inerte para aislar el fuego.", "Espuma química concentrada."], correct: 2, explanation: "P10: Prohibido usar agua o CO2. Se requiere material inerte como arena fina seca o polvo de piedra." },
+      { id: "P11", category: "Manejo de Extintores", question: "¿Cuáles son las tres capas de control y mantenimiento obligatorias para los extintores?", options: ["1) Inspección visual mensual, 2) Mantenimiento anual por proveedor competente, 3) Prueba hidrostática periódica.", "1) Limpieza diaria, 2) Cambio de pintura semestral, 3) Recarga cada 5 años.", "1) Verificación telefónica, 2) Pesaje semanal, 3) Lavado interno.", "1) Inspección por la ARL, 2) Reemplazo de manguera mensual, 3) Descarte anual."], correct: 0, explanation: "P11: Inspección mensual (manómetro/seguro), Mantenimiento anual (art. 220) y Prueba hidrostática de cilindro." },
+      { id: "P12", category: "Manejo de Extintores", question: "¿Cómo se debe señalar y demarcar el área de ubicación de un extintor en el piso?", options: ["Señalar en pared roja y demarcar en el piso un semicírculo amarillo de 50 cm de radio con franja de 5 cm.", "Pintar el piso totalmente de color negro.", "Poner una cinta amarilla de precauciones cruzada.", "No requiere demarcación en piso si la pared es visible."], correct: 0, explanation: "P12: Pared color rojo (art. 224) y semicírculo amarillo en piso de 50 cm de radio con franja de 5 cm." },
+      { id: "P13", category: "Manejo de Extintores", question: "¿Cuál es la duración continua aproximada de descarga de un extintor de 10 libras?", options: ["Entre 10 y 20 segundos.", "Entre 2 y 5 minutos.", "Aproximadamente 45 segundos.", "Más de 10 minutos continuos."], correct: 0, explanation: "P13: La carga se agota entre 10 y 20 segundos de descarga continua." },
+      { id: "P14", category: "Manejo de Extintores", question: "¿Cuáles son las tres condiciones posicionales fundamentales al aplicar un extintor?", options: ["Viento a la espalda, ruta de salida a la espalda y retirarse si se agota el agente o el humo desciende.", "Viento de frente, inclinarse hacia el fuego y permanecer dentro del área.", "Estar acompañado, colocarse de rodillas y mantener la puerta cerrada.", "Mirar hacia el suelo, avanzar corriendo y vaciar el cilindro."], correct: 0, explanation: "P14: Viento a favor (a la espalda), salida a la espalda en todo momento y evacuación si no se controla." },
+      { id: "P15", category: "Manejo de Extintores", question: "¿Qué normas técnicas de la NFPA y NTC regulan la selección y distribución de extintores?", options: ["NFPA 10 y Norma Técnica Colombiana NTC 2885.", "NFPA 70 y NTC 1500.", "NFPA 101 y NTC 45001.", "ISO 9001 y NTC 5555."], correct: 0, explanation: "P15: Regulados bajo la NFPA 10 y la Norma Técnica Colombiana NTC 2885." },
+      { id: "P16", category: "Rutas de Evacuación", question: "¿Cómo se define legalmente una ruta de evacuación y qué norma exige su implementación?", options: ["Recorrido continuo desde el puesto de trabajo a lugar seguro exterior. Obligatorio por Decreto 1072 de 2015.", "Camino opcional sugerido por la brigada mediante circulares internas.", "Cualquier pasillo interior que conduzca a un baño de la clínica.", "El mapa general de distribución de oficinas de la empresa."], correct: 0, explanation: "P16: Recorrido continuo exterior seguro exigido por el Decreto 1072/2015 (Art. 2.2.4.6.25 numeral 8)." },
+      { id: "P17", category: "Rutas de Evacuación", question: "¿Cuál es el alcance de la cobertura legal del plan de evacuación?", options: ["Cubre obligatoriamente a todos los turnos, trabajadores, contratistas, subcontratistas, proveedores y visitantes.", "Aplica únicamente para el personal de planta en jornada diurna.", "Solo abarca a los miembros capacitados de la brigada de emergencias.", "Solo protege a los pacientes hospitalizados en cama."], correct: 0, explanation: "P17: Cubre la totalidad de centros y turnos de trabajo, incluyendo a visitantes y contratistas." },
+      { id: "P18", category: "Rutas de Evacuación", question: "¿Con qué frecuencia mínima exige la norma colombiana realizar simulacros de evacuación?", options: ["Como mínimo una (1) vez al año con la participación de todos los trabajadores.", "Cada tres meses de forma obligatoria.", "Una vez cada dos años según la ARL.", "Únicamente cuando la Secretaría de Salud lo requiera."], correct: 0, explanation: "P18: Mínimo 1 vez al año conforme al Decreto 1072 de 2015 (Art. 2.2.4.6.25 numeral 10)." },
+      { id: "P19", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿qué elementos de circulación NO deben considerarse jamás como salidas de emergencia?", options: ["Escaleras de madera, escaleras de caracol, ascensores y escaleras de mano.", "Pasillos principales con piso antideslizante.", "Puertas con barra antipánico.", "Rampas exteriores de concreto."], correct: 0, explanation: "P19: Prohibidas como salidas de emergencia: escaleras de madera, caracol, ascensores y de mano." },
+      { id: "P20", category: "Rutas de Evacuación", question: "¿Cuáles son los requisitos físicos de la Res. 2400/1979 para las salidas de emergencia?", options: ["Mínimo 2 salidas amplias por piso, protegidas, libres de obstáculos, iluminadas y puertas abriendo hacia el exterior.", "Una sola salida central provista de cerradura electromagnética.", "Salidas de emergencia de tamaño estándar con apertura hacia adentro.", "Ventanales amoblados que conecten al patio interno."], correct: 0, explanation: "P20: Mínimo 2 salidas por piso, independientes, iluminadas, despejadas y con apertura en sentido de salida." },
+      { id: "P21", category: "Rutas de Evacuación", question: "¿Cuál es la diferencia técnica entre Ruta de Evacuación, Salida de Emergencia y Punto de Encuentro?", options: ["Ruta: recorrido interior; Salida: punto estructural exterior; Punto de Encuentro: zona segura exterior para conteo.", "Son tres términos idénticos para denominar la puerta principal.", "Ruta: patio; Salida: pasillo; Punto de Encuentro: recepción.", "Ruta: ascensor; Salida: escaleras; Punto de Encuentro: oficina de SST."], correct: 0, explanation: "P21: La Ruta es el trayecto; la Salida es el límite estructural; el Punto de Encuentro es la zona exterior para conteo." },
+      { id: "P22", category: "Rutas de Evacuación", question: "¿Cuáles son las cuatro fases del proceso de evacuación y qué conforma el tiempo de reacción?", options: ["1) Detección, 2) Alarma, 3) Preparación, 4) Salida. Las 3 primeras constituyen el tiempo de reacción.", "1) Fuego, 2) Gritos, 3) Corrida, 4) Rescate.", "1) Conteo, 2) Llamada, 3) Espera, 4) Salida.", "1) Alerta, 2) Reacción, 3) Extinción, 4) Evaluación."], correct: 0, explanation: "P22: Fases: Detección, Alarma, Preparación y Salida. El tiempo de reacción comprende las tres primeras." },
+      { id: "P23", category: "Rutas de Evacuación", question: "¿En qué consiste el 'Código de Pitos' utilizado para señales de emergencia auditivas?", options: ["1 pitazo: Alerta; 2 pitazos: Emergencia confirmada (prepararse); 3 pitazos: Evacuación inmediata.", "1 pitazo: Evacuar; 2 pitazos: Silencio; 3 pitazos: Regresar.", "1 pitazo: Incendio; 2 pitazos: Terremoto; 3 pitazos: Fuga de gas.", "Es una señal aleatoria según el criterio del brigadista."], correct: 0, explanation: "P23: 1 pitazo = Alerta de brigadista; 2 pitazos = Confirmación/Preparación; 3 pitazos = Evacuación inmediata." },
+      { id: "P24", category: "Rutas de Evacuación", question: "¿Qué tres características indispensables debe poseer un mensaje de alarma de evacuación?", options: ["Debe ser concreto (amenaza clara), apremiante (acción inmediata) e informar consecuencias de no atenderlo.", "Debe ser largo, detallado en normas e incluir nombres del comité.", "Debe ser emitido en varios idiomas mediante susurros.", "Debe ser transmitido únicamente por correo electrónico."], correct: 0, explanation: "P24: El mensaje debe caracterizarse por ser concreto, apremiante e informar las consecuencias." },
+      { id: "P25", category: "Rutas de Evacuación", question: "¿Cómo se clasifica a los pacientes hospitalarios para definir su prioridad de evacuación?", options: ["No críticos (autónomos), Estables (no caminan pero sin soporte vital) y Críticos (con soporte vital).", "Por edad: adultos mayores, niños y jóvenes.", "Por el número de cama u orden de ingreso al piso.", "Pacientes con EPS contributiva vs subsidiada."], correct: 0, explanation: "P25: Clasificados en No críticos (autónomos), Estables (sin soporte) y Críticos (dependientes de soporte vital)." },
+      { id: "P26", category: "Rutas de Evacuación", question: "¿Cuál es el orden prioritario de evacuación de pacientes en un centro clínico?", options: ["1° Que puedan desplazarse solos; 2° No deambulan más próximos a salidas; 3° No deambulan alejados de salidas.", "1° Pacientes en estado crítico con soporte vital intensivo.", "1° Médicos y enfermeros antes que cualquier paciente.", "Evacuar en orden de piso: de arriba hacia abajo sin distinciones."], correct: 0, explanation: "P26: 1° Autónomos para despejar vías; 2° No deambulan cercanos a salidas; 3° No deambulan lejanos a salidas." },
+      { id: "P27", category: "Rutas de Evacuación", question: "¿Qué instrucciones de comportamiento deben seguirse al transitar por una ruta de evacuación?", options: ["Mantener la calma, no correr, fila a la pared, apagar equipos, tocar puertas antes de abrir y no regresar.", "Correr rápidamente para llegar primero y transportar pertenencias de valor.", "Usar el ascensor si está disponible y abrir todas las puertas para ventilar.", "Gritar para alertar a otros áreas y retornar por elementos personales."], correct: 0, explanation: "P27: Mantener calma, avanzar sin correr pegado a pared, no llevar bultos, probar temperatura de puertas y no devolverse." },
+      { id: "P28", category: "Rutas de Evacuación", question: "¿Cómo se debe llevar a cabo la evacuación de personas con discapacidad visual?", options: ["Anunciar presencia sin gritar, ofrecer ayuda, pedir que coloquen su mano en el hombro del guía y conducirlos.", "Tormarlas del brazo abruptamente y tirar de ellas hacia la calle.", "Dejarlas al final del grupo para no retrasar la evacuación general.", "Gritar las indicaciones desde el extremo del pasillo."], correct: 0, explanation: "P28: Hablar con tono natural, permitir que pongan la mano en el hombro del guía y conducirlos al punto seguro." },
+      { id: "P29", category: "Rutas de Evacuación", question: "¿Cuáles son las pautas para evacuar a personas con discapacidad auditiva o disartria?", options: ["Ubicarse de frente, hablar despacio, usar lenguaje corporal/señas o escribir instrucciones en papel.", "Elevar la voz al máximo nivel posible cerca de su oído.", "Hacer gestos de pánico para acelerar su marcha.", "Ignorar su condición y continuar advancing en la fila."], correct: 0, explanation: "P29: Posicionarse de frente para lectura de labios, emplear señas claras o escribir notas breves." },
+      { id: "P30", category: "Rutas de Evacuación", question: "¿Qué es y cómo se opera la silla de evacuación especializada tipo SPENCER?", options: ["Silla con orugas para escaleras. Pasos: 1) Desplegar/bloquear, 2) Sentar/asegurar, 3) Extender empuñaduras, 4) Deslizar.", "Silla de ruedas estándar que se lanza por la rampa de emergencias.", "Dispositivo de elevación eléctrica para transporte en ascensores.", "Camilla rígida de madera operada por 4 personas."], correct: 0, explanation: "P30: Silla con sistema de orugas para descenso fluido por escaleras asegurando al paciente con cinturones." }
+    ];
+
+    let currentUser = { name: "", document: "", role: "", service: "" };
+    let activeQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+    let selectedOption = null;
+
+    let scene, camera, renderer, cube;
+
+    function init3D() {
+      const container = document.getElementById('canvas-container-3d');
+      container.innerHTML = "";
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+      camera.position.z = 2.8;
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(56, 56);
+      container.appendChild(renderer.domElement);
+      const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+      const material = new THREE.MeshPhongMaterial({ color: 0x4f46e5, emissive: 0x1e1b4b, specular: 0xffffff, shininess: 100, transparent: true, opacity: 0.9 });
+      cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      scene.add(ambientLight);
+      const pointLight = new THREE.PointLight(0x38bdf8, 1.5);
+      pointLight.position.set(2, 3, 4);
+      scene.add(pointLight);
+      animate3D();
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+      if (cube) {
+        cube.rotation.x += 0.015;
+        cube.rotation.y += 0.02;
+      }
+      renderer.render(scene, camera);
+    }
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function generateRandomExam() {
+      // Selecciona 10 preguntas totalmente aleatorias del banco general y las mezcla en orden aleatorio
+      return shuffleArray(rawQuestionBank).slice(0, 10);
+    }
+
+    function startQuiz(e) {
+      e.preventDefault();
+      currentUser.name = document.getElementById('user-name').value.trim();
+      currentUser.document = document.getElementById('user-document').value.trim();
+      currentUser.role = document.getElementById('user-role').value.trim();
+      currentUser.service = document.getElementById('user-service').value.trim();
+
+      activeQuestions = generateRandomExam();
+      document.getElementById('step-register').classList.add('hidden');
+      document.getElementById('step-quiz').classList.remove('hidden');
+      document.getElementById('badge-step').classList.remove('hidden');
+
+      init3D();
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = activeQuestions[currentQuestionIndex];
+      selectedOption = null;
+      document.getElementById('badge-step').innerText = `${currentQuestionIndex + 1} / ${activeQuestions.length}`;
+      document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / activeQuestions.length) * 100}%`;
+      document.getElementById('q-category').innerText = q.category;
+      document.getElementById('q-text').innerText = q.question;
+
+      const btnNext = document.getElementById('btn-next');
+      btnNext.disabled = true;
+      btnNext.className = "w-full bg-slate-300 text-slate-500 font-bold py-3.5 rounded-xl transition-all text-sm shadow-sm";
+      btnNext.innerText = currentQuestionIndex === activeQuestions.length - 1 ? "Finalizar Evaluación" : "Siguiente Pregunta";
+
+      document.getElementById('feedback-box').classList.add('hidden');
+
+      // Mezclar las opciones aleatoriamente manteniendo la referencia de la respuesta correcta
+      const optionsWithStatus = q.options.map((opt, idx) => ({
+        text: opt,
+        isCorrect: idx === q.correct
+      }));
+      const shuffledOptions = shuffleArray(optionsWithStatus);
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = "";
+      shuffledOptions.forEach((optObj, index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `w-full text-left p-3.5 rounded-2xl border border-slate-200/80 bg-white/80 text-xs font-semibold text-slate-700 hover:border-indigo-400 hover:bg-indigo-50/50 active:scale-[0.98] transition-all flex items-start gap-3 shadow-sm`;
+        btn.innerHTML = `<span class="bg-slate-100 text-indigo-700 rounded-lg w-6 h-6 flex items-center justify-center text-[11px] font-black flex-shrink-0 mt-0.5 shadow-inner">${String.fromCharCode(65 + index)}</span><span class="leading-snug">${optObj.text}</span>`;
+        btn.onclick = () => selectOption(index, optObj.isCorrect, shuffledOptions, btn);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedIndex, isCorrect, shuffledOptions, btnElement) {
+      if (selectedOption !== null) return;
+      selectedOption = selectedIndex;
+      const q = activeQuestions[currentQuestionIndex];
+
+      if (isCorrect) score++;
+
+      userAnswers.push({
+        id: q.id,
+        bloque: q.category,
+        pregunta: q.question,
+        respuestaSeleccionada: shuffledOptions[selectedIndex].text,
+        correcta: isCorrect ? "Sí" : "No"
+      });
+
+      const buttons = document.getElementById('options-container').children;
+      Array.from(buttons).forEach((b, idx) => {
+        if (shuffledOptions[idx].isCorrect) {
+          b.className = "w-full text-left p-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 text-xs font-bold flex items-start gap-3 shadow-md";
+        } else if (idx === selectedIndex && !isCorrect) {
+          b.className = "w-full text-left p-3.5 rounded-2xl border-2 border-rose-500 bg-rose-50 text-rose-950 text-xs font-bold flex items-start gap-3 shadow-md";
+        } else {
+          b.className = "w-full text-left p-3.5 rounded-2xl border border-slate-100 bg-slate-50/50 text-slate-400 text-xs flex items-start gap-3 opacity-50";
+        }
+      });
+
+      const feedbackBox = document.getElementById('feedback-box');
+      feedbackBox.innerText = q.explanation;
+      feedbackBox.className = `p-3.5 rounded-2xl mb-4 text-xs font-medium leading-relaxed block shadow-inner ${isCorrect ? 'bg-emerald-100/80 text-emerald-900 border border-emerald-300' : 'bg-rose-100/80 text-rose-900 border border-rose-300'}`;
+
+      const btnNext = document.getElementById('btn-next');
+      btnNext.disabled = false;
+      btnNext.className = "w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-sm";
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < activeQuestions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('step-quiz').classList.add('hidden');
+      document.getElementById('badge-step').classList.add('hidden');
+      document.getElementById('step-results').classList.remove('hidden');
+
+      document.getElementById('user-summary').innerText = `${currentUser.name} | C.C. ${currentUser.document} | ${currentUser.role} (${currentUser.service})`;
+    }
+
+    function downloadPDFCertificate() {
+      // Actualizar datos de la plantilla PDF
+      document.getElementById('cert-user-name').innerText = currentUser.name;
+      document.getElementById('cert-user-doc').innerText = currentUser.document;
+      document.getElementById('cert-user-role').innerText = currentUser.role;
+      document.getElementById('cert-user-service').innerText = currentUser.service;
+      
+      const today = new Date();
+      document.getElementById('cert-date').innerText = `Fecha de emisión: ${today.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+      const element = document.getElementById('pdf-certificate-template');
+      
+      const opt = {
+        margin:       0,
+        filename:     `Certificado_Participacion_${currentUser.document}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'px', format: [800, 565], orientation: 'landscape' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>
