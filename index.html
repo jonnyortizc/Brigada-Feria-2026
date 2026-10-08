@@ -26,7 +26,10 @@
   <header class="bg-slate-900/80 backdrop-blur-md text-white p-4 shadow-lg border-b border-slate-700/50 sticky top-0 z-10">
     <div class="max-w-md mx-auto flex justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-20 h-20 object-contain flex-shrink-0 drop-shadow">
+        <!-- ============================================================================================== -->
+        <!-- CAMBIAR IMAGEN AQUÍ: Modifica el atributo 'src' de esta etiqueta <img> para cambiar el logo del BANNER -->
+        <!-- ============================================================================================== -->
+        <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-10 h-10 object-contain flex-shrink-0 drop-shadow">
         
         <div>
           <h1 class="font-bold text-sm leading-tight">BRIGADA DE EMERGENCIA<br><span class="text-xs text-blue-300 font-normal">Clínica del Prado</span></h1>
@@ -42,8 +45,8 @@
     <!-- 1. REGISTRO DEL COLABORADOR -->
     <div id="step-register" class="glass-card rounded-3xl shadow-2xl p-6 fade-in border border-white/20">
       <div class="text-center mb-5">
-        <h2 class="text-2xl font-black text-slate-800">Registro de Participante</h2>
-        <p class="text-xs text-slate-500 mt-1">Capacitación de Extintores y Emergencias</p>
+        <h2 class="text-2xl font-black text-slate-800">Registro de Personal</h2>
+        <p class="text-xs text-slate-500 mt-1">Evaluación de Seguridad & Emergencias</p>
       </div>
       
       <form id="form-user" onsubmit="startQuiz(event)" class="space-y-3.5">
@@ -106,14 +109,9 @@
       <h2 class="text-2xl font-black text-slate-800 mb-0.5">Evaluación Completada</h2>
       <p id="user-summary" class="text-xs text-slate-500 mb-4">Detalles del colaborador</p>
 
-      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-3 shadow-inner">
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200/60 mb-5 shadow-inner">
         <span class="block text-xl font-black text-emerald-800 tracking-tight">Participación Registrada</span>
         <span id="score-display" class="text-sm font-extrabold text-teal-700 mt-1 block">Calificación: 0 / 10</span>
-      </div>
-
-      <!-- Estado de Envío de Datos -->
-      <div id="sync-status" class="mb-4 text-xs font-semibold text-slate-500 flex items-center justify-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Guardando datos en Google Sheets...
       </div>
 
       <div class="space-y-2.5">
@@ -132,85 +130,83 @@
   </main>
 
   <!-- PLANTILLA DEL CERTIFICADO -->
-<div class="hidden">
-  <div id="pdf-certificate-template" class="w-[800px] h-[565px] p-8 bg-white text-slate-800 relative flex flex-col justify-between box-border font-sans overflow-hidden border-8 border-cyan-800">
-    
-    <!-- Fondos Decorativos Institucionales -->
-    <svg class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-15" viewBox="0 0 800 565" fill="none">
-      <path d="M-100,80 C150,180 350,-20 850,120 L850,-50 L-100,-50 Z" fill="#005B94"/>
-      <path d="M-100,520 C200,380 400,560 850,420 L850,600 L-100,600 Z" fill="#00A389"/>
-    </svg>
+  <div class="hidden">
+    <div id="pdf-certificate-template" class="w-[800px] h-[565px] p-8 bg-white text-slate-800 relative flex flex-col justify-between box-border font-sans overflow-hidden border-8 border-cyan-800">
+      
+      <!-- Fondos Decorativos Institucionales -->
+      <svg class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-15" viewBox="0 0 800 565" fill="none">
+        <path d="M-100,80 C150,180 350,-20 850,120 L850,-50 L-100,-50 Z" fill="#005B94"/>
+        <path d="M-100,520 C200,380 400,560 850,420 L850,600 L-100,600 Z" fill="#00A389"/>
+      </svg>
 
-    <!-- Encabezado Institucional -->
-    <div class="flex justify-between items-center z-10 border-b-2 border-cyan-800/20 pb-3">
-      <div class="flex items-center gap-4">
-        <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-20 h-20 object-contain flex-shrink-0">
-        <div>
-          <h1 class="text-2xl font-black text-cyan-950 tracking-tight">BRIGADA DE EMERGENCIAS</h1>
-          <p class="text-xs font-bold text-cyan-700 uppercase tracking-wider">CLÍNICA DEL PRADO</p>
+      <!-- Encabezado Institucional -->
+      <div class="flex justify-between items-center z-10 border-b-2 border-cyan-800/20 pb-3">
+        <div class="flex items-center gap-4">
+          
+          <!-- ============================================================================================== -->
+          <!-- CAMBIAR IMAGEN AQUÍ: Reemplaza el src de esta imagen para actualizar el logo del CERTIFICADO   -->
+          <!-- ============================================================================================== -->
+          <img src="Logo_Brigada_CP.png" alt="Logo Brigada" class="w-16 h-16 object-contain flex-shrink-0">
+
+          <div>
+            <h1 class="text-2xl font-black text-cyan-950 tracking-tight">BRIGADA DE EMERGENCIAS</h1>
+            <p class="text-xs font-bold text-cyan-700 uppercase tracking-wider">CLÍNICA DEL PRADO</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block bg-cyan-900 text-white text-[10px] font-black uppercase px-3.5 py-1.5 rounded-full shadow-sm">Feria de la Salud 2026</span>
+          <p class="text-[9px] text-cyan-800 font-semibold mt-1">Gestión del Riesgo Institucional</p>
         </div>
       </div>
-      <div class="text-right">
-        <span class="inline-block bg-cyan-900 text-white text-[10px] font-black uppercase px-3.5 py-1.5 rounded-full shadow-sm">Feria de la Salud 2026</span>
-        <p class="text-[9px] text-cyan-800 font-semibold mt-1">Gestión del Riesgo Institucional</p>
+
+      <!-- Texto Central Unificado -->
+      <div class="text-center z-10 my-auto py-4 px-6 flex flex-col justify-center items-center">
+        <p class="text-xs font-black text-cyan-700 uppercase tracking-widest mb-1">Certificado de Capacitación y Evaluación</p>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight mb-2">CONSTANCIA DE PARTICIPACIÓN</h2>
+        <p class="text-xs text-slate-600 mb-6 max-w-lg">Se hace constar que el siguiente colaborador ha completado satisfactoriamente la evaluación teórica e interactiva de la Brigada de Emergencia:</p>
+        
+        <!-- Datos del Colaborador -->
+        <h3 id="cert-user-name" class="text-3xl font-black text-cyan-950 uppercase tracking-wide mb-2">Nombre del Colaborador</h3>
+        <p class="text-sm text-slate-800 font-semibold">
+          C.C. <strong id="cert-user-doc" class="text-cyan-900">1020304050</strong> &nbsp;•&nbsp; 
+          Cargo: <strong id="cert-user-role" class="text-cyan-900">Cargo</strong> &nbsp;•&nbsp; 
+          Área/Servicio: <strong id="cert-user-service" class="text-cyan-900">Servicio</strong>
+        </p>
+        <p class="text-xs text-teal-700 font-bold mt-4 uppercase tracking-wider">
+          Módulos Evaluados: Extintores & Rutas de Evacuación
+        </p>
       </div>
-    </div>
 
-    <!-- Texto Central Unificado -->
-    <div class="text-center z-10 my-auto py-4 px-6 flex flex-col justify-center items-center">
-      <p class="text-sm font-black text-cyan-700 uppercase tracking-widest mb-1">Certificado de Capacitación y Evaluación</p>
-      <h2 class="text-xl font-extrabold text-slate-900 tracking-tight mb-4 uppercase">Constancia de Participación</h2>
-      
-      <!-- Oración unificada con el nombre ajustado (más pequeño y sin subrayado) -->
-      <p class="text-sm text-slate-700 leading-relaxed max-w-2xl">
-        Se hace constar que el colaborador 
-        <strong id="cert-user-name" class="text-lg font-black text-cyan-950 uppercase tracking-wide inline-block mx-1">Nombre del Colaborador</strong>, 
-        identificado con C.C. <strong id="cert-user-doc" class="text-cyan-900 font-bold">1020304050</strong>, 
-        en el cargo de <strong id="cert-user-role" class="text-cyan-900 font-bold">Cargo</strong> 
-        del área/servicio <strong id="cert-user-service" class="text-cyan-900 font-bold">Servicio</strong>, 
-        ha completado satisfactoriamente la capacitación y evaluación teórica e interactiva de la Brigada de Emergencia.
-      </p>
-
-      <p class="text-xs text-teal-700 font-bold mt-6 uppercase tracking-wider">
-        Módulos Evaluados: Extintores & Rutas de Evacuación
-      </p>
-    </div>
-
-    <!-- Pie de Página -->
-    <div class="z-10 pt-3 border-t border-slate-200 flex justify-between items-end">
-      <div class="text-left">
-        <p id="cert-date" class="text-[10px] text-slate-600 font-semibold">Fecha de emisión: Octubre 2026</p>
-        <p class="text-[9px] text-slate-400">Medellín, Colombia • Clínica del Prado</p>
-      </div>
-      
-      <div class="text-center">
-        <div class="w-40 border-t border-slate-400 pt-1">
-          <p class="text-[10px] font-bold text-cyan-800">Brigada de Emergencia</p>
-          <p class="text-[8px] text-slate-500">Coordinación General</p>
+      <!-- Pie de Página -->
+      <div class="z-10 pt-3 border-t border-slate-200 flex justify-between items-end">
+        <div class="text-left">
+          <p id="cert-date" class="text-[10px] text-slate-600 font-semibold">Fecha de emisión: Octubre 2026</p>
+          <p class="text-[9px] text-slate-400">Medellín, Colombia • Clínica del Prado</p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-40 border-t border-slate-400 pt-1">
+            <p class="text-[10px] font-bold text-cyan-800">Brigada de Emergencia</p>
+            <p class="text-[8px] text-slate-500">Coordinación General</p>
+          </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
-  
 
-<footer class="p-3 text-center text-[10px] text-slate-400 font-medium">
+  <footer class="p-3 text-center text-[10px] text-slate-400 font-medium">
     Feria de la Salud - Octubre 2026
   </footer>
 
   <script>
-    // ==============================================================================================
-    // CONFIGURACIÓN DE CONEXIÓN CON GOOGLE SHEETS
-    // ==============================================================================================
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAumXE4rerIyN015Hx-53meqMHsZdszN1Wy882Kj0s9EuPXmd42l-YpGQS5bnOzSoiGQ/exec";
-    
     const rawQuestionBank = [
+      // MÓDULO 1: MANEJO DE EXTINTORES
       { id: "P1", category: "Manejo de Extintores", question: "¿Qué evaluación previa debe realizarse antes de decidir combatir un fuego con un extintor?", options: ["Verificar que el fuego sea pequeño (conato), tener ruta de salida despejada a la espalda y conocer el tipo de fuego.", "Verificar si hay personal capacitado presente y buscar EPP completo.", "Descargar el extintor de inmediato sin evaluar el entorno.", "Llamar a la gerencia antes de accionar la palanca."], correct: 0, explanation: "P1: Debe confirmarse que sea un fuego pequeño (conato), contar con ruta de escape libre a la espalda y conocer el agente a usar." },
       { id: "P2", category: "Manejo de Extintores", question: "¿En qué consisten los 4 pasos de la técnica P.A.S.S. para el uso seguro de un extintor?", options: ["Presionar, Apuntar, Salir, Secar.", "P (Pull): Tira del seguro; A (Aim): Apunta a la base; S (Squeeze): Aprieta palanca; S (Sweep): Barre a los lados.", "Parar, Apagar, Soplar, Sacudir.", "Proteger, Avisar, Socorrer, Salvar."], correct: 1, explanation: "P2: P.A.S.S. representa Pull (desbloquear), Aim (apuntar a la base), Squeeze (apretar) y Sweep (barrer la base)." },
       { id: "P3", category: "Manejo de Extintores", question: "¿Cuáles son los errores más comunes al intentar operar un extintor?", options: ["Apuntar a las llamas, acercarse demasiado, dar ráfagas cortas y no recargarlo tras su uso.", "Usar guantes de protección e inspeccionar la manguera.", "Retirarse con la mirada puesta en el fuego.", "Mantener el viento a la espalda durante la aplicación."], correct: 0, explanation: "P3: Los errores principales son apuntar a las llamas (en lugar de la base), pararse muy cerca, descargas sin control y no recargarlo." },
       { id: "P4", category: "Manejo de Extintores", question: "¿Cuáles son las características y limitaciones del extintor de Polvo Químico Seco (ABC)?", options: ["Es solo para líquidos inflamables y no deja ningún residuo.", "Apto para Clase A, B y C; pero su residuo de fosfato monoamónico es corrosivo para electrónica y difícil de limpiar.", "Apaga fuegos por enfriamiento con agua a alta presión.", "Es un gas inerte recomendado para quirófanos y data centers."], correct: 1, explanation: "P4: Es multipropósito (ABC), pero su polvo daña componentes electrónicos delicados por su carácter corrosivo." },
-      { id: "P5", category: "Manejo de Extintores", question: "¿Por qué el extintor de CO2 es la opción recomendada para centros de cómputo y tableros eléctricos?", options: ["Porque congela las surfaces metálicas impidiendo la combustión.", "Porque utiliza un gas limpio que apaga por sofocación sin dejar residuos que dañen equipos delicados.", "Porque es más económico que el Polvo Químico Seco.", "Porque su alcance supera los 15 metros de distancia."], correct: 1, explanation: "P5: El CO2 es un gas limpio que se evapora sin dejar residuos físicos que dañen los circuitos." },
+      { id: "P5", category: "Manejo de Extintores", question: "¿Por qué el extintor de CO2 es la opción recomendada para centros de cómputo y tableros eléctricos?", options: ["Porque congela las superficies metálicas impidiendo la combustión.", "Porque utiliza un gas limpio que apaga por sofocación sin dejar residuos que dañen equipos delicados.", "Porque es más económico que el Polvo Químico Seco.", "Porque su alcance supera los 15 metros de distancia."], correct: 1, explanation: "P5: El CO2 es un gas limpio que se evapora sin dejar residuos físicos que dañen los circuitos." },
       { id: "P6", category: "Manejo de Extintores", question: "¿Por qué la boquilla o 'corneta' del extintor de CO2 tiene un tamaño significativamente grande?", options: ["Para concentrar la presión de salida hacia el techo.", "Para permitir la rápida expansión del gas y proteger al usuario de quemaduras por frío extremo.", "Para almacenar repuestos del precinto de seguridad.", "Por mera estética de fabricación industrial."], correct: 1, explanation: "P6: Permite la rápida expansión del CO2 descargado a temperaturas congelantes y previene quemaduras en las manos." },
       { id: "P7", category: "Manejo de Extintores", question: "¿Cuáles son las alturas reglamentarias de instalación para extintores portátiles en Colombia?", options: ["Mayor a 40 lbs: máx 1.53 m; Menor a 40 lbs: máx 1.07 m. Separación del piso no menor a 10.2 cm.", "Todos los extintores deben instalarse a 2.0 metros de altura sobre el piso.", "Cualquier altura mientras esté colgado de la pared.", "Deben ubicarse directamente sobre el piso sin soporte."], correct: 0, explanation: "P7: Máximo 1.53 m si pesa más de 40 lbs; máx 1.07 m si pesa menos. La base debe estar a mínimo 10.2 cm del piso." },
       { id: "P8", category: "Manejo de Extintores", question: "Según la Res. 2400/1979, ¿cuál es la cantidad mínima de extintores por área de trabajo?", options: ["Un extintor por cada 500 metros cuadrados.", "Un extintor por cada 200 metros cuadrados de local o fracción.", "Dos extintores por cada habitación sin importar el área.", "Un extintor único por piso del establecimiento."], correct: 1, explanation: "P8: Art. 221 establece no menos de un extintor por cada 200 metros cuadrados de local o fracción." },
@@ -221,21 +217,23 @@
       { id: "P13", category: "Manejo de Extintores", question: "¿Cuál es la duración continua aproximada de descarga de un extintor de 10 libras?", options: ["Entre 10 y 20 segundos.", "Entre 2 y 5 minutos.", "Aproximadamente 45 segundos.", "Más de 10 minutos continuos."], correct: 0, explanation: "P13: La carga se agota entre 10 y 20 segundos de descarga continua." },
       { id: "P14", category: "Manejo de Extintores", question: "¿Cuáles son las tres condiciones posicionales fundamentales al aplicar un extintor?", options: ["Viento a la espalda, ruta de salida a la espalda y retirarse si se agota el agente o el humo desciende.", "Viento de frente, inclinarse hacia el fuego y permanecer dentro del área.", "Estar acompañado, colocarse de rodillas y mantener la puerta cerrada.", "Mirar hacia el suelo, avanzar corriendo y vaciar el cilindro."], correct: 0, explanation: "P14: Viento a favor (a la espalda), salida a la espalda en todo momento y evacuación si no se controla." },
       { id: "P15", category: "Manejo de Extintores", question: "¿Qué normas técnicas de la NFPA y NTC regulan la selección y distribución de extintores?", options: ["NFPA 10 y Norma Técnica Colombiana NTC 2885.", "NFPA 70 y NTC 1500.", "NFPA 101 y NTC 45001.", "ISO 9001 y NTC 5555."], correct: 0, explanation: "P15: Regulados bajo la NFPA 10 y la Norma Técnica Colombiana NTC 2885." },
-      { id: "P16", category: "Rutas de Evacuación", question: "¿Cómo se define legalmente una ruta de evacuación y qué norma exige su implementación?", options: ["Recorrido continuo desde el puesto de trabajo a lugar seguro exterior. Obligatorio por Decreto 1072 de 2015.", "Camino opcional sugerido por la brigada mediante circulares internas.", "Cualquier pasillo interior que conduzca a un baño de la clínica.", "El mapa general de distribución de oficinas de la empresa."], correct: 0, explanation: "P16: Recorrido continuo exterior seguro exigido por el Decreto 1072/2015 (Art. 2.2.4.6.25 numeral 8)." },
-      { id: "P17", category: "Rutas de Evacuación", question: "¿Cuál es el alcance de la cobertura legal del plan de evacuación?", options: ["Cubre obligatoriamente a todos los turnos, trabajadores, contratistas, subcontratistas, proveedores y visitantes.", "Aplica únicamente para el personal de planta en jornada diurna.", "Solo abarca a los miembros capacitados de la brigada de emergencias.", "Solo protege a los pacientes hospitalizados en cama."], correct: 0, explanation: "P17: Cubre la totalidad de centros y turnos de trabajo, incluyendo a visitantes y contratistas." },
-      { id: "P18", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿con qué frecuencia mínima exige la norma colombiana realizar simulacros de evacuación?", options: ["Como mínimo una (1) vez al año con la participación de todos los trabajadores.", "Cada tres meses de forma obligatoria.", "Una vez cada dos años según la ARL.", "Únicamente cuando la Secretaría de Salud lo requiera."], correct: 0, explanation: "P18: Mínimo 1 vez al año conforme al Decreto 1072 de 2015 (Art. 2.2.4.6.25 numeral 10)." },
-      { id: "P19", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿qué elementos de circulación NO deben considerarse jamás como salidas de emergencia?", options: ["Escaleras de madera, escaleras de caracol, ascensores y escaleras de mano.", "Pasillos principales con piso antideslizante.", "Puertas con barra antipánico.", "Rampas exteriores de concreto."], correct: 0, explanation: "P19: Prohibidas como salidas de emergencia: escaleras de madera, caracol, ascensores y de mano." },
-      { id: "P20", category: "Rutas de Evacuación", question: "Según la Res. 2400/1979, ¿cuáles son los requisitos físicos para las salidas de emergencia?", options: ["Mínimo 2 salidas amplias por piso, protegidas, libres de obstáculos, iluminadas y puertas abriendo hacia el exterior.", "Una sola salida central provista de cerradura electromagnética.", "Salidas de emergencia de tamaño estándar con apertura hacia adentro.", "Ventanales amoblados que conecten al patio interno."], correct: 0, explanation: "P20: Mínimo 2 salidas por piso, independientes, iluminadas, despejadas y con apertura en sentido de salida." },
-      { id: "P21", category: "Rutas de Evacuación", question: "¿Cuál es la diferencia técnica entre Ruta de Evacuación, Salida de Emergencia y Punto de Encuentro?", options: ["Ruta: recorrido interior; Salida: punto estructural exterior; Punto de Encuentro: zona segura exterior para conteo.", "Son tres términos idénticos para denominar la puerta principal.", "Ruta: patio; Salida: pasillo; Punto de Encuentro: recepción.", "Ruta: ascensor; Salida: escaleras; Punto de Encuentro: oficina de SST."], correct: 0, explanation: "P21: La Ruta es el trayecto; la Salida es el límite estructural; el Punto de Encuentro es la zona exterior para conteo." },
-      { id: "P22", category: "Rutas de Evacuación", question: "¿Cuáles son las cuatro fases del proceso de evacuación y qué conforma el tiempo de reacción?", options: ["1) Detección, 2) Alarma, 3) Preparación, 4) Salida. Las 3 primeras constituyen el tiempo de reacción.", "1) Fuego, 2) Gritos, 3) Corrida, 4) Rescate.", "1) Conteo, 2) Llamada, 3) Espera, 4) Salida.", "1) Alerta, 2) Reacción, 3) Extinción, 4) Evaluación."], correct: 0, explanation: "P22: Fases: Detección, Alarma, Preparación y Salida. El tiempo de reacción comprende las tres primeras." },
-      { id: "P23", category: "Rutas de Evacuación", question: "¿En qué consiste el 'Código de Pitos' utilizado para señales de emergencia auditivas?", options: ["1 pitazo: Alerta; 2 pitazos: Emergencia confirmada (prepararse); 3 pitazos: Evacuación inmediata.", "1 pitazo: Evacuar; 2 pitazos: Silencio; 3 pitazos: Regresar.", "1 pitazo: Incendio; 2 pitazos: Terremoto; 3 pitazos: Fuga de gas.", "Es una señal aleatoria según el criterio del brigadista."], correct: 0, explanation: "P23: 1 pitazo = Alerta de brigadista; 2 pitazos = Confirmación/Preparación; 3 pitazos = Evacuación inmediata." },
-      { id: "P24", category: "Rutas de Evacuación", question: "¿Qué tres características indispensables debe poseer un mensaje de alarma de evacuación?", options: ["Debe ser concreto (amenaza clara), apremiante (acción inmediata) e informar consecuencias de no atenderlo.", "Debe ser largo, detallado en normas e incluir nombres del comité.", "Debe ser emitido en varios idiomas mediante susurros.", "Debe ser transmitido únicamente por correo electrónico."], correct: 0, explanation: "P24: El mensaje debe caracterizarse por ser concreto, apremiante e informar las consecuencias." },
-      { id: "P25", category: "Rutas de Evacuación", question: "¿Cómo se clasifica a los pacientes hospitalarios para definir su prioridad de evacuación?", options: ["No críticos (autónomos), Estables (no caminan pero sin soporte vital) y Críticos (con soporte vital).", "Por edad: adultos mayores, niños y jóvenes.", "Por el número de cama u orden de ingreso al piso.", "Pacientes con EPS contributiva vs subsidiada."], correct: 0, explanation: "P25: Clasificados en No críticos (autónomos), Estables (sin soporte) y Críticos (dependientes de soporte vital)." },
-      { id: "P26", category: "Rutas de Evacuación", question: "¿Cuál es el orden prioritario de evacuación de pacientes en un centro clínico?", options: ["1° Que puedan desplazarse solos; 2° No deambulan más próximos a salidas; 3° No deambulan alejados de salidas.", "1° Pacientes en estado crítico con soporte vital intensivo.", "1° Médicos y enfermeros antes que cualquier paciente.", "Evacuar en orden de piso: de arriba hacia abajo sin distinciones."], correct: 0, explanation: "P26: 1° Autónomos para despejar vías; 2° No deambulan cercanos a salidas; 3° No deambulan lejanos a salidas." },
-      { id: "P27", category: "Rutas de Evacuación", question: "¿Qué instrucciones de comportamiento deben seguirse al transitar por una ruta de evacuación?", options: ["Mantener la calma, no correr, fila a la pared, apagar equipos, tocar puertas antes de abrir y no regresar.", "Correr rápidamente para llegar primero y transportar pertenencias de valor.", "Usar el ascensor si está disponible y abrir todas las puertas para ventilar.", "Gritar para alertar a otros áreas y retornar por elementos personales."], correct: 0, explanation: "P27: Mantener calma, avanzar sin correr pegado a pared, no llevar bultos, probar temperatura de puertas y no devolverse." },
-      { id: "P28", category: "Rutas de Evacuación", question: "¿Cómo se debe llevar a cabo la evacuación de personas con discapacidad visual?", options: ["Anunciar presencia sin gritar, ofrecer ayuda, pedir que coloquen su mano en el hombro del guía y conducirlos.", "Tormarlas del brazo abruptamente y tirar de ellas hacia la calle.", "Dejarlas al final del grupo para no retrasar la evacuación general.", "Gritar las indicaciones desde el extremo del pasillo."], correct: 0, explanation: "P28: Hablar con tono natural, permitir que pongan la mano en el hombro del guía y conducirlos al punto seguro." },
-      { id: "P29", category: "Rutas de Evacuación", question: "¿Cuáles son las pautas para evacuar a personas con discapacidad auditiva o disartria?", options: ["Ubicarse de frente, hablar despacio, usar lenguaje corporal/señas o escribir instrucciones en papel.", "Elevar la voz al máximo nivel posible cerca de su oído.", "Hacer gestos de pánico para acelerar su marcha.", "Ignorar su condición y continuar advancing en la fila."], correct: 0, explanation: "P29: Posicionarse de frente para lectura de labios, emplear señas claras o escribir notas breves." },
-      { id: "P30", category: "Rutas de Evacuación", question: "¿Qué es y cómo se opera la silla de evacuación especializada tipo SPENCER?", options: ["Silla con orugas para escaleras. Pasos: 1) Desplegar/bloquear, 2) Sentar/asegurar, 3) Extender empuñaduras, 4) Deslizar.", "Silla de ruedas estándar que se lanza por la rampa de emergencias.", "Dispositivo de elevación eléctrica para transporte en ascensores.", "Camilla rígida de madera operada por 4 personas."], correct: 0, explanation: "P30: Silla con sistema de orugas para descenso fluido por escaleras asegurando al paciente con cinturones." }
+
+      // MÓDULO 2: RUTAS DE EVACUACIÓN (NUEVAS PREGUNTAS DEL ARCHIVO ADJUNTO)
+      { id: "P16", category: "Rutas de Evacuación", question: "¿Qué es una evacuación?", options: ["Conjunto de acciones y desplazamientos hacia rutas o zonas seguras para proteger la vida.", "El procedimiento exclusivo de apagar un incendio con extintores portátiles.", "La reorganización del mobiliario y archivadores de la clínica tras una alerta.", "La llegada de los bomberos al lugar de la emergencia."], correct: 0, explanation: "P16: Evacuación se define como el conjunto de acciones y desplazamientos hacia rutas o zonas seguras para proteger la vida." },
+      { id: "P17", category: "Rutas de Evacuación", question: "¿Qué es una ruta de evacuación?", options: ["Camino continuo y señalizado que conduce desde cualquier punto del edificio hasta el exterior a nivel del suelo.", "Cualquier pasillo interno utilizado habitualmente para conectar oficinas.", "La vía principal de circulación de ambulancias en la parte externa.", "Un plano arquitectónico depositado en la oficina de seguridad."], correct: 0, explanation: "P17: Es un camino continuo y debidamente señalizado que conduce desde cualquier punto hasta el exterior a nivel del suelo." },
+      { id: "P18", category: "Rutas de Evacuación", question: "¿Cuál es la definición de puntos de encuentro?", options: ["Lugares seguros, preestablecidos y señalizados para reunirse tras evacuar.", "Las salas de espera principales de la zona de urgencias.", "El despacho del coordinador general de la brigada.", "Cualquier espacio libre dentro de la instalación durante la alarma."], correct: 0, explanation: "P18: Son lugares seguros, previamente establecidos y señalizados para reunirse una vez realizada la evacuación." },
+      { id: "P19", category: "Rutas de Evacuación", question: "¿Qué función cumplen los puntos de encuentro en una evacuación?", options: ["Proteger a las personas, facilitar el conteo, organizar la comunicación y apoyar a los equipos de emergencia.", "Permitir que el personal continúe sus labores administrativas en carpas.", "Almacenar temporalmente los insumos médicos evacuados.", "Servir de estacionamiento prioritario para vehículos de rescate."], correct: 0, explanation: "P19: Protegen a las personas, facilitan el conteo de personal, organizan la comunicación y apoyan la labor de los equipos de emergencia." },
+      { id: "P20", category: "Rutas de Evacuación", question: "¿Cuáles son las características principales de las salidas de emergencia?", options: ["Señalizadas, libres de obstáculos, accesibles, con iluminación adecuada, ancho suficiente y apertura hacia afuera.", "Puertas pesadas con cerrojo nocturno, cerradas con llave y apertura hacia adentro.", "Pasillos angostos decorados y con iluminación atenuada para evitar pánico.", "Acceso restringido únicamente mediante huella dactilar o tarjeta magnética."], correct: 0, explanation: "P20: Deben estar señalizadas, libres de obstáculos, ser accesibles, tener iluminación adecuada, ancho suficiente y abrir hacia afuera." },
+      { id: "P21", category: "Rutas de Evacuación", question: "¿Por qué deben permanecer despejadas las salidas de emergencia?", options: ["Para garantizar una salida rápida, continua y segura.", "Para permitir la ventilación natural de las salas contiguas.", "Para facilitar la limpieza y mantenimiento del piso.", "Para evitar la acumulación de polvo en las puertas."], correct: 0, explanation: "P21: Deben estar siempre despejadas para garantizar una salida rápida, continua y segura de todas las personas." },
+      { id: "P22", category: "Rutas de Evacuación", question: "¿Cuáles son los riesgos de bloquear las salidas de emergencia?", options: ["Demoras, pánico, aglomeraciones, caídas, lesiones y atrapamientos.", "Aumento involuntario en el consumo de energía eléctrica.", "Sanciones leves únicamente administrativas.", "Ninguno, siempre que las puertas permanezcan abiertas."], correct: 0, explanation: "P22: Bloquearlas genera demoras, pánico, aglomeraciones, caídas, lesiones e incluso atrapamientos mortales." },
+      { id: "P23", category: "Rutas de Evacuación", question: "¿Cuál es la premisa o punto inicial fundamental durante una evacuación?", options: ["Mantener la calma y evitar el pánico.", "Correr rápidamente hacia la salida más visible.", "Gritar para alertar a todo el personal cercano.", "Recoger los documentos y objetos de valor."], correct: 0, explanation: "P23: La premisa indispensable en cualquier evacuación es mantener la calma y evitar el pánico." },
+      { id: "P24", category: "Rutas de Evacuación", question: "¿Qué acción NUNCA se debe realizar durante un proceso de evacuación?", options: ["Regresar al lugar evacuado por pertenencias u otra razón sin autorización.", "Avanzar caminando a paso firme hacia el punto de encuentro.", "Seguir las instrucciones de la brigada de emergencia.", "Utilizar las escaleras fijas señalizadas."], correct: 0, explanation: "P24: NUNCA se debe regresar al área evacuada por pertenencias u otra razón sin autorización expresa." },
+      { id: "P25", category: "Rutas de Evacuación", question: "¿Qué acciones se deben tomar si una salida de emergencia se encuentra bloqueada?", options: ["Mantener la calma, ir a la ruta/salida alternativa más cercana, no mover obstáculos ni devolverse, y avisar al equipo de emergencia.", "Intentar mover todos los obstáculos pesados antes de continuar la marcha.", "Devolverse al puesto de trabajo original a esperar rescate.", "Forzar la apertura de ventanas cerradas para saltar al exterior."], correct: 0, explanation: "P25: Mantener la calma, dirigirse a la salida alternativa más cercana sin intentar mover obstáculos ni devolverse, y avisar al equipo de emergencia." },
+      { id: "P26", category: "Rutas de Evacuación", question: "¿Cómo ayudan los simulacros en la prevención y gestión del riesgo?", options: ["Familiarizan con las salidas, permiten practicar la evacuación y mejoran la respuesta ordenada ante un evento real.", "Reemplazan la necesidad de mantener señalización física en los pasillos.", "Demuestran el tiempo exacto que tarda en llegar el cuerpo de bomberos.", "Servir de pausa paulatina en la jornada laboral."], correct: 0, explanation: "P26: Familiarizan a los ocupantes con las salidas, permiten practicar el procedimiento y mejoran la respuesta ordenada ante un evento real." },
+      { id: "P27", category: "Rutas de Evacuación", question: "¿Cómo se identifica la ruta de evacuación más cercana en un área?", options: ["Siguiendo las señales de evacuación y letreros de salida de emergencia.", "Buscando la corriente de aire fresco dentro del pasillo.", "Siguiendo a la multitud de personas sin verificar la señalización.", "Preguntando a los pacientes presentes en las salas."], correct: 0, explanation: "P27: Se identifica visualmente siguiendo las señales fotoluminiscentes de evacuación y letreros de salida de emergencia." },
+      { id: "P28", category: "Rutas de Evacuación", question: "¿Quiénes son los responsables de mantener las rutas de evacuación despejadas?", options: ["Todos los ocupantes, administradores y personal de seguridad.", "Únicamente el personal de aseo y servicios generales.", "Exclusivamente la brigada de emergencias.", "Los contratistas externos de infraestructura."], correct: 0, explanation: "P28: La responsabilidad de mantenerlas despejadas recae en todos los ocupantes, administradores y personal de seguridad." },
+      { id: "P29", category: "Rutas de Evacuación", question: "¿A dónde deben dirigirse los pacientes y visitantes al activarse la alarma?", options: ["Al punto de encuentro asignado, permaneciendo en orden a la espera de instrucciones.", "A la salida principal del edificio para retirarse individualmente a sus casas.", "A las áreas de recepción a cancelar sus citas médicas.", "A los baños y zonas cerradas para resguardarse."], correct: 0, explanation: "P29: Deben dirigirse al punto de encuentro asignado y permanecer en orden a la espera de instrucciones oficiales." },
+      { id: "P30", category: "Rutas de Evacuación", question: "¿Cuáles son las funciones principales del personal de salud durante una evacuación?", options: ["Guiar a pacientes y visitantes, asistir a quienes lo necesiten y ejecutar el plan de emergencia institucional.", "Evacuar primero que todos para coordinar la recepción en la calle.", "Transportar el archivo clínico físico de cada paciente.", "Esperar a que la ARL asuma el control directivo del piso."], correct: 0, explanation: "P30: Guiar a pacientes y visitantes, brindar asistencia a quienes lo requieran y ejecutar el plan de emergencia institucional." }
     ];
 
     let currentUser = { name: "", document: "", role: "", service: "" };
@@ -382,81 +380,7 @@
 
       document.getElementById('user-summary').innerText = `${currentUser.name} | C.C. ${currentUser.document} | ${currentUser.role} (${currentUser.service})`;
       document.getElementById('score-display').innerText = `Calificación obtenida: ${score} / 10`;
-
-      // Envío automático de los datos a Google Sheets
-      const payload = {
-        nombre: currentUser.name,
-        documento: currentUser.document,
-        cargo: currentUser.role,
-        servicio: currentUser.service,
-        calificacion: score
-      };
-
-      sendDataToGoogleSheets(payload);
     }
-
-    // ==============================================================================================
-    // FUNCIONALIDADES ASÍNCRONAS PARA ENVÍO Y MANEJO OFFLINE
-    // ==============================================================================================
-    async function sendDataToGoogleSheets(payload) {
-      const syncStatusEl = document.getElementById('sync-status');
-      
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (syncStatusEl) {
-          syncStatusEl.className = "mb-4 text-xs font-bold text-emerald-600 flex items-center justify-center gap-1";
-          syncStatusEl.innerHTML = `✓ Datos guardados exitosamente`;
-        }
-      } catch (error) {
-        console.warn("Error de red, guardando respaldo local:", error);
-        saveOfflineBackup(payload);
-
-        if (syncStatusEl) {
-          syncStatusEl.className = "mb-4 text-xs font-semibold text-amber-600 flex items-center justify-center gap-1";
-          syncStatusEl.innerHTML = `⚠️ Guardado localmente (se sincronizará al recuperar red)`;
-        }
-      }
-    }
-
-    function saveOfflineBackup(payload) {
-      try {
-        const pending = JSON.parse(localStorage.getItem("brigada_pending_sync") || "[]");
-        pending.push(payload);
-        localStorage.setItem("brigada_pending_sync", JSON.stringify(pending));
-      } catch (e) {
-        console.error("No se pudo guardar en almacenamiento local:", e);
-      }
-    }
-
-    async function syncOfflineData() {
-      const pending = JSON.parse(localStorage.getItem("brigada_pending_sync") || "[]");
-      if (pending.length === 0) return;
-
-      const remaining = [];
-      for (const item of pending) {
-        try {
-          await fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(item)
-          });
-        } catch (e) {
-          remaining.push(item);
-        }
-      }
-      localStorage.setItem("brigada_pending_sync", JSON.stringify(remaining));
-    }
-
-    // Escucha de reconexión
-    window.addEventListener("online", syncOfflineData);
-    document.addEventListener("DOMContentLoaded", syncOfflineData);
 
     function downloadPDFCertificate() {
       document.getElementById('cert-user-name').innerText = currentUser.name;
